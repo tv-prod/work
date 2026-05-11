@@ -1108,7 +1108,6 @@
     .video-carousel-track {
       overflow: hidden;
       direction: ltr;
-      border-radius: 20px;
     }
     .video-carousel-slides {
       display: flex;
@@ -1118,127 +1117,33 @@
     }
     .video-slide {
       flex: 0 0 100%;
+      min-width: 0;
+      padding: 0 8px;
+      box-sizing: border-box;
       direction: rtl;
     }
-    .video-iframe-wrap {
-      width: 100%;
-      aspect-ratio: 9 / 16;
+    .video-slide-inner {
+      background: linear-gradient(145deg, #151525, #0d0d1e);
+      border: 1px solid rgba(0,212,255,0.18);
       border-radius: 20px;
       overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .video-iframe-wrap {
       position: relative;
-      background: #111;
-      border: 1px solid var(--black-border);
-      cursor: pointer;
+      padding-bottom: 177.78%;
+      height: 0;
+      background: #070712;
+      overflow: hidden;
     }
     .video-iframe-wrap iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
     }
-    [id^="vframe-"] {
-      position: absolute;
-      inset: 0;
-    }
-    .video-thumb-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      cursor: pointer;
-      transition: opacity .25s ease;
-    }
-    .video-thumb-overlay.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .video-thumb-img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
-      opacity: 0;
-      transition: opacity .35s ease;
-    }
-    .video-thumb-img.loaded { opacity: 1; }
-    .video-thumb-grad {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 35%, transparent 55%, rgba(0,0,0,0.7) 100%);
-      z-index: 3;
-    }
-    .video-play-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 4;
-      width: 68px;
-      height: 50px;
-      border-radius: 12px;
-      background: rgba(0,0,0,0.82);
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      transition: transform .2s ease, background .2s ease;
-    }
-    .video-play-btn svg { width: 26px; height: 26px; fill: white; margin-right: -2px; }
-    .video-thumb-overlay:hover .video-play-btn {
-      background: rgba(0,0,0,0.95);
-      transform: translate(-50%, -50%) scale(1.08);
-    }
-    .video-dur-badge {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      z-index: 4;
-      background: rgba(255,255,255,0.92);
-      color: #111;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 5px;
-      font-family: 'Courier New', monospace;
-    }
-    .video-slide-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 4px 0;
-    }
-    .video-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--cyan-dk), var(--cyan));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--black);
-      flex-shrink: 0;
-    }
-    .video-slide-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--white);
-    }
-    .video-slide-role {
-      font-size: 12px;
-      color: var(--white-dim);
-      margin-top: 2px;
-    }
-    .video-stars {
-      margin-right: auto;
-      color: var(--cyan);
-      font-size: 13px;
-      letter-spacing: 1px;
-    }
-    .video-slide-meta { display: none; }
 
     .video-dots {
       display: flex;
@@ -1958,7 +1863,7 @@
         <div class="about-video-placeholder">
           <iframe
             id="heroIframe"
-            src="https://iframe.mediadelivery.net/embed/653666/6ee39235-6fae-4614-a947-618b5548ed3a?autoplay=true&muted=true&loop=false&preload=true"
+            src="https://iframe.mediadelivery.net/embed/653666/6ee39235-6fae-4614-a947-618b5548ed3a?autoplay=true&muted=true&loop=true&preload=true"
             allow="autoplay; fullscreen; picture-in-picture"
             allowfullscreen
           ></iframe>
@@ -2452,8 +2357,8 @@
     ============================================================ */
     (function () {
       var BASE    = 'https://iframe.mediadelivery.net/embed/653666/6ee39235-6fae-4614-a947-618b5548ed3a';
-      var PARAMS_MUTED   = '?autoplay=true&muted=true&loop=false&preload=true';
-      var PARAMS_UNMUTED = '?autoplay=true&muted=false&loop=false&preload=true';
+      var PARAMS_MUTED   = '?autoplay=true&muted=true&loop=true&preload=true';
+      var PARAMS_UNMUTED = '?autoplay=true&muted=false&loop=true&preload=true';
 
       var iframe    = document.getElementById('heroIframe');
       var pauseBtn  = document.getElementById('hvPauseBtn');
@@ -2919,137 +2824,95 @@
        VIDEO TESTIMONIALS CAROUSEL — design-system §5
     ============================================================ */
     (function () {
-      const VIDEOS = [
+      var VIDEOS = [
         '1002408084','1002407839','1002408420','1002409056',
         '1002408798','1002409347','1182638467','1182638535',
         '1182638631','1182638715','1182638803','1182638874',
         '1182638940','1182639024'
       ];
-      const TOTAL = VIDEOS.length;
+      var TOTAL = VIDEOS.length;
 
-      const slidesEl = document.getElementById('vcSlides');
-      const btnPrev  = document.getElementById('vcPrev');
-      const btnNext  = document.getElementById('vcNext');
-      const dotsWrap = document.getElementById('vcDots');
-      const track    = document.getElementById('vcTrack');
+      var slidesEl = document.getElementById('vcSlides');
+      var btnPrev  = document.getElementById('vcPrev');
+      var btnNext  = document.getElementById('vcNext');
+      var dotsWrap = document.getElementById('vcDots');
+      var track    = document.getElementById('vcTrack');
       if (!slidesEl) return;
 
-      let current = 0;
-      const metaCache = {};
-
-      function fmt(sec) {
-        const m = Math.floor(sec / 60), s = sec % 60;
-        return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-      }
+      var current = 0;
 
       /* Build slides */
-      VIDEOS.forEach((id, i) => {
-        const slide = document.createElement('div');
+      VIDEOS.forEach(function(id, i) {
+        var slide = document.createElement('div');
         slide.className = 'video-slide';
         slide.innerHTML =
-          '<div class="video-iframe-wrap">' +
-            '<div class="video-thumb-overlay" id="vover-' + i + '">' +
-              '<img class="video-thumb-img" id="vimg-' + i + '" src="" alt="">' +
-              '<div class="video-thumb-grad"></div>' +
-              '<div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>' +
-              '<span class="video-dur-badge" id="vdur-' + i + '"></span>' +
+          '<div class="video-slide-inner">' +
+            '<div class="video-iframe-wrap">' +
+              '<iframe' +
+                ' data-src="https://player.vimeo.com/video/' + id + '?badge=0&autopause=0&player_id=vimeo-' + i + '&app_id=58479"' +
+                ' allow="autoplay; fullscreen; picture-in-picture"' +
+                ' allowfullscreen' +
+                ' title="המלצה ' + (i + 1) + '">' +
+              '</iframe>' +
             '</div>' +
-            '<div id="vframe-' + i + '"></div>' +
-          '</div>' +
-          '<div class="video-slide-meta">' +
-            '<div class="video-avatar" id="vav-' + i + '">?</div>' +
-            '<div>' +
-              '<div class="video-slide-name" id="vname-' + i + '">טוען...</div>' +
-              '<div class="video-slide-role" id="vrole-' + i + '"></div>' +
-            '</div>' +
-            '<div class="video-stars">★★★★★</div>' +
           '</div>';
         slidesEl.appendChild(slide);
-
-        slide.querySelector('.video-thumb-overlay').addEventListener('click', () => {
-          if (i !== current) return;
-          const src = 'https://player.vimeo.com/video/' + id +
-            '?autoplay=1&badge=0&byline=0&title=0&portrait=0&dnt=1&quality=auto';
-          document.getElementById('vframe-' + i).innerHTML =
-            '<iframe src="' + src + '" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
-          document.getElementById('vover-' + i).classList.add('hidden');
-        });
       });
 
       /* Build dots */
-      VIDEOS.forEach((_, i) => {
-        const d = document.createElement('button');
+      VIDEOS.forEach(function(_, i) {
+        var d = document.createElement('button');
         d.className = 'video-dot';
-        d.addEventListener('click', () => goTo(i));
+        d.dataset.idx = i;
+        d.addEventListener('click', function() { goTo(i); });
         dotsWrap.appendChild(d);
       });
 
-      async function loadMeta(i, videoId) {
-        try {
-          if (!metaCache[videoId]) {
-            const r = await fetch('https://vimeo.com/api/oembed.json?url=https://vimeo.com/' + videoId);
-            metaCache[videoId] = await r.json();
-          }
-          const d = metaCache[videoId];
-          if (!d) return;
-
-          if (d.duration) document.getElementById('vdur-' + i).textContent = fmt(d.duration);
-
-          if (d.thumbnail_url) {
-            const img = document.getElementById('vimg-' + i);
-            const hiRes = d.thumbnail_url.replace(/_(\d+)x(\d+)\./, (_, w, h) =>
-              +h > +w ? '_1080x1920.' : '_1280x720.'
-            );
-            img.onload  = () => img.classList.add('loaded');
-            img.onerror = () => img.classList.add('loaded');
-            img.src = hiRes;
-          }
-
-          if (d.title) {
-            document.getElementById('vname-' + i).textContent = d.title;
-            document.getElementById('vav-'   + i).textContent = d.title.charAt(0);
-          }
-        } catch {}
+      function loadIframe(idx) {
+        if (idx < 0 || idx >= TOTAL) return;
+        var iframe = slidesEl.querySelectorAll('.video-slide')[idx].querySelector('iframe');
+        if (iframe && iframe.hasAttribute('data-src')) {
+          iframe.setAttribute('src', iframe.getAttribute('data-src'));
+          iframe.removeAttribute('data-src');
+        }
       }
 
       function updateDots() {
-        dotsWrap.querySelectorAll('.video-dot').forEach((d, i) =>
-          d.classList.toggle('active', i === current)
-        );
-      }
-
-      function goTo(idx) {
-        /* stop current player */
-        document.getElementById('vframe-' + current).innerHTML = '';
-        document.getElementById('vover-'  + current).classList.remove('hidden');
-
-        current = Math.max(0, Math.min(idx, TOTAL - 1));
-        slidesEl.style.transform = 'translateX(-' + (current * 100) + '%)';
-        btnNext.disabled = current === 0;
-        btnPrev.disabled = current === TOTAL - 1;
-        updateDots();
-
-        /* lazy-load adjacent */
-        [current - 1, current, current + 1].forEach(j => {
-          if (j >= 0 && j < TOTAL) loadMeta(j, VIDEOS[j]);
+        dotsWrap.querySelectorAll('.video-dot').forEach(function(d, i) {
+          d.classList.toggle('active', i === current);
         });
       }
 
-      btnPrev.addEventListener('click', () => goTo(current + 1));
-      btnNext.addEventListener('click', () => goTo(current - 1));
+      function goTo(n) {
+        if (n >= TOTAL) n = 0;
+        if (n < 0) n = TOTAL - 1;
+        current = n;
+        var w = slidesEl.querySelectorAll('.video-slide')[0].offsetWidth;
+        slidesEl.style.transform = 'translateX(-' + (current * w) + 'px)';
+        updateDots();
+        loadIframe(current);
+        var next = current + 1 >= TOTAL ? 0 : current + 1;
+        setTimeout(function() { loadIframe(next); }, 300);
+      }
 
-      let swipeX = 0;
-      track.addEventListener('touchstart', e => { swipeX = e.touches[0].clientX; }, { passive: true });
-      track.addEventListener('touchend',   e => {
-        const diff = swipeX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+      window.addEventListener('resize', function() { goTo(current); });
+
+      btnPrev.addEventListener('click', function() { goTo(current + 1); });
+      btnNext.addEventListener('click', function() { goTo(current - 1); });
+
+      var swipeX = 0;
+      track.addEventListener('touchstart', function(e) { swipeX = e.touches[0].clientX; }, { passive: true });
+      track.addEventListener('touchend', function(e) {
+        var dx = e.changedTouches[0].clientX - swipeX;
+        if (Math.abs(dx) > 40) goTo(dx > 0 ? current - 1 : current + 1);
       });
 
       /* init */
-      btnNext.disabled = true;
       updateDots();
-      loadMeta(0, VIDEOS[0]);
-      loadMeta(1, VIDEOS[1]);
+      setTimeout(function() {
+        loadIframe(0);
+        if (TOTAL > 1) loadIframe(1);
+      }, 500);
     })();
 
     /* ── Testimonials heading — staggered char reveal (looping) — */
